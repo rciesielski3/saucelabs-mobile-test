@@ -7,7 +7,7 @@ const appPath = path.resolve(__dirname, process.env.APP_PATH || "");
 
 export const config = {
   runner: "local",
-  specs: ["./tests/*.ts"],
+  specs: ["./test/specs/*.ts"],
   maxInstances: 1,
 
   capabilities: [
