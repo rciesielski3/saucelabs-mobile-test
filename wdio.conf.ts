@@ -1,26 +1,31 @@
 import { config as dotenvConfig } from "dotenv";
 import path from "path";
+import fs from "fs";
+
+import { getAndroidCaps, getIosCaps } from "./config";
 
 dotenvConfig();
 
-const appPath = path.resolve(__dirname, process.env.APP_PATH || "");
+function getAppPath(): string {
+  const folderPath = path.resolve(__dirname, process.env.APP_FOLDER || "");
+  const files = fs.readdirSync(folderPath);
+  if (!files.length) throw new Error(`No app file found in ${folderPath}`);
+  return path.join(folderPath, files[0]);
+}
+
+const appPath = getAppPath();
+const platform = process.env.PLATFORM?.toLowerCase();
+
+const capabilities = [
+  platform === "ios" ? getIosCaps(appPath) : getAndroidCaps(appPath),
+];
 
 export const config = {
   runner: "local",
   specs: ["./test/specs/*.ts"],
   maxInstances: 1,
 
-  capabilities: [
-    {
-      platformName: process.env.PLATFORM || "Android",
-      "appium:platformVersion": process.env.PLATFORM_VERSION || "11",
-      "appium:deviceName": process.env.DEVICE_NAME || "emulator-5554",
-      "appium:automationName": "UiAutomator2",
-      "appium:app": process.env.APP_PATH,
-      "appium:appPackage": "com.swaglabsmobileapp",
-      "appium:appActivity": "com.swaglabsmobileapp.SplashActivity",
-    },
-  ],
+  capabilities,
 
   logLevel: "info",
 

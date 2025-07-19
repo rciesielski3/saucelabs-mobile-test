@@ -1,4 +1,4 @@
-# Sauce Labs Mobile Test (WebdriverIO + Appium + TypeScript)
+# 📱 Sauce Labs Mobile Test (WebdriverIO + Appium + TypeScript)
 
 Automated mobile UI tests using **WebdriverIO**, **Appium**, and **TypeScript**.  
 Supports testing mobile apps.
@@ -21,12 +21,16 @@ Supports testing mobile apps.
 saucelabs-mobile-test/
 │
 ├── assets/                    # Contains app file
-├── config/                    # Capability config (Android)
+├── config/                    # Platform capability configs (Android, iOS)
+│   ├── android.config.ts
+│   └── ios.config.ts
 ├── test/
 │   ├── specs/                 # E2E test specs
 │   └── pageobjects/           # Page Object classes
 │
 ├── .env                       # Device + app config
+├── .env.android               # Android device/app settings
+├── .env.ios                   # iOS device/app settings
 ├── tsconfig.json              # TypeScript config
 ├── wdio.conf.ts               # WebdriverIO main config
 ├── package.json               # Dependencies & scripts
@@ -42,23 +46,50 @@ saucelabs-mobile-test/
 npm install
 ```
 
-### 2. Configure `.env`
+### 2. Add iOS or Android app
 
-For Android
+Place your `.apk` or `.app/.zip` file in the matching folder:
 
-```env
-PLATFORM=Android
-PLATFORM_VERSION=15
-DEVICE_NAME=emulator-5554
-APP_PATH=./assets/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
+```
+assets/android/
+assets/ios/
 ```
 
-### 3. Run test
+Pre-built app are available at https://github.com/saucelabs/sample-app-mobile/releases/
 
-Make sure an emulator or device is running and Appium server is up:
+---
+
+## 🚀 Running Tests
+
+### Android (emulator or real device)
 
 ```bash
-npm run test
+npm run test:android
+```
+
+### iOS (simulator or real device)
+
+```bash
+npm run test:ios
+```
+
+Scripts will:
+
+- Copy `.env.android` or `.env.ios` into `.env`
+- Load proper capabilities automatically
+- Run using `wdio.conf.ts`
+
+---
+
+## 🌍 Environment Variables
+
+Each `.env` file must define:
+
+```env
+PLATFORM=Android or iOS
+PLATFORM_VERSION=15.0 or 17.0
+DEVICE_NAME=your_device_name
+APP_FOLDER=./assets/android or ./assets/ios
 ```
 
 ---

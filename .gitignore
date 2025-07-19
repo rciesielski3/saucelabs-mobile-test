@@ -2,3 +2,5 @@ node_modules
 assets
 
 .env
+.env.android
+.env.ios

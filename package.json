@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "wdio run wdio.conf.ts"
+    "test": "wdio run wdio.conf.ts",
+    "test:android": "cp .env.android .env && wdio run wdio.conf.ts",
+    "test:ios": "cp .env.ios .env && wdio run wdio.conf.ts"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "@wdio/spec-reporter": "^9.18.0",
     "appium": "^2.19.0",
     "appium-uiautomator2-driver": "^4.2.5",
+    "appium-xcuitest-driver": "^9.9.6",
     "dotenv": "^17.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
