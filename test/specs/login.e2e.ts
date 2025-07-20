@@ -1,4 +1,4 @@
-import LoginScreen from "../pageobjects/LoginScreen";
+import LoginScreen from "../../pageobjects/LoginScreen";
 
 describe("Launch App", () => {
   const loginScreen = new LoginScreen();
