@@ -3,7 +3,7 @@ import LoginScreen from "../pageobjects/LoginScreen";
 import ProductsScreen from "../pageobjects/ProductsScreen";
 import CartScreen from "../pageobjects/CartScreen";
 
-describe("🛒 Add product to cart", () => {
+describe("Add product to cart", () => {
   let loginScreen: LoginScreen;
   let productScreen: ProductsScreen;
   let cartScreen: CartScreen;
@@ -17,10 +17,12 @@ describe("🛒 Add product to cart", () => {
     await loginScreen.login(users.standard.username, users.standard.password);
   });
 
-  it("should add a product and verify it in the cart", async () => {
-    const addedTitle = await productScreen.addFirstProductToCart();
-    await productScreen.goToCart();
+  it("should add first product dynamically", async () => {
+    const productList = await productScreen.getProductList();
+    const firstProduct = productList[0];
 
-    await cartScreen.isProductInCart(addedTitle);
+    await productScreen.addProductToCartByTitle(firstProduct.title);
+    await productScreen.goToCart();
+    await cartScreen.isProductInCart(firstProduct.title);
   });
 });
