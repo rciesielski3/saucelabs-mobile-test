@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "commonjs",
-    "types": ["@wdio/globals", "mocha"],
+    "types": ["@wdio/globals", "mocha", "@wdio/globals/types", "@wdio/sync"],
     "moduleResolution": "node",
     "esModuleInterop": true,
     "strict": true,
