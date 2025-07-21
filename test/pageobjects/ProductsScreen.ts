@@ -1,4 +1,5 @@
 import { $, $$, expect, browser } from "@wdio/globals";
+import { waitForElements } from "../utils/waitForElements";
 
 export default class ProductsScreen {
   get title() {
@@ -22,24 +23,17 @@ export default class ProductsScreen {
   }
 
   async addFirstProductToCart(): Promise<string> {
-    await browser.waitUntil(async () => {
-      const titles = await this.productTitles;
-      const buttons = await this.addToCartButtons;
-
-      const titlesCount = await titles.length;
-      const buttonsCount = await buttons.length;
-
-      return titlesCount > 0 && buttonsCount > 0;
-    });
+    await waitForElements("~test-Item title");
+    await waitForElements("~test-ADD TO CART");
 
     const titles = await this.productTitles;
     const buttons = await this.addToCartButtons;
 
     const firstTitle = await titles[0]?.getText();
+    if (!firstTitle) throw new Error("❌ Failed to get product title");
 
     await buttons[0]?.click();
-    //console.log
-    console.log("firstTitle" + firstTitle);
+
     return firstTitle;
   }
 
