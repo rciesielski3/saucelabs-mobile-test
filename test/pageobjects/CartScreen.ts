@@ -1,17 +1,25 @@
 import { $$, expect } from "@wdio/globals";
+
 import { byTestId, crossPlatformTextSelector } from "../utils/selectors";
 
 export default class CartScreen {
+  private readonly selectors = {
+    item: byTestId("test-Item"),
+    itemTitle: byTestId("test-Item title"),
+    checkoutButton: byTestId("test-CHECKOUT"),
+    removeButton: "~test-REMOVE",
+  };
+
   get cartItems() {
-    return $$(byTestId("test-Item"));
+    return $$(this.selectors.item);
   }
 
   get cartItemTitles() {
-    return $$(byTestId("test-Item title"));
+    return $$(this.selectors.itemTitle);
   }
 
   get checkoutBtn() {
-    return $(byTestId("test-CHECKOUT"));
+    return $(this.selectors.checkoutButton);
   }
 
   async proceedToCheckout() {
@@ -48,7 +56,7 @@ export default class CartScreen {
 
       const isExisting = await titleEl.isExisting();
       if (isExisting) {
-        const removeBtn = await item.$("~test-REMOVE");
+        const removeBtn = await item.$(this.selectors.removeButton);
         await removeBtn.click();
         return;
       }
