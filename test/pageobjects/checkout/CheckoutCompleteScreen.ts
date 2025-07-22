@@ -3,12 +3,17 @@ import { $, expect } from "@wdio/globals";
 import { crossPlatformTextSelector } from "../../utils/selectors";
 
 export default class CheckoutCompleteScreen {
+  private readonly selectors = {
+    thankYouMessage: crossPlatformTextSelector("THANK YOU FOR YOU ORDER"),
+    backHomeButton: "~test-BACK HOME",
+  };
+
   get thankYouMessage() {
-    return $(crossPlatformTextSelector("THANK YOU FOR YOU ORDER"));
+    return $(this.selectors.thankYouMessage);
   }
 
   get backHomeButton() {
-    return $("~test-BACK HOME");
+    return $(this.selectors.backHomeButton);
   }
 
   async isDisplayed() {

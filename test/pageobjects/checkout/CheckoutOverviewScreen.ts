@@ -3,16 +3,22 @@ import { $ } from "@wdio/globals";
 import { byTestId, crossPlatformTextSelector } from "../../utils/selectors";
 
 export default class CheckoutOverviewScreen {
+  private readonly selectors = {
+    finishBtn: byTestId("test-FINISH"),
+    productTitle: byTestId("test-Item title"),
+    productPrice: byTestId("test-Price"),
+  };
+
   get finishBtn() {
-    return $(byTestId("test-FINISH"));
+    return $(this.selectors.finishBtn);
   }
 
   get productTitle() {
-    return $(byTestId("test-Item title"));
+    return $(this.selectors.productTitle);
   }
 
   get productPrice() {
-    return $(byTestId("test-Price"));
+    return $(this.selectors.productPrice);
   }
 
   async finishOrder() {

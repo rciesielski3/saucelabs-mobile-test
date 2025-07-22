@@ -3,20 +3,27 @@ import { $ } from "@wdio/globals";
 import { byTestId } from "../../utils/selectors";
 
 export default class CheckoutInfoScreen {
+  private readonly selectors = {
+    firstNameField: byTestId("test-First Name"),
+    lastNameField: byTestId("test-Last Name"),
+    zipCodeField: byTestId("test-Zip/Postal Code"),
+    continueBtn: byTestId("test-CONTINUE"),
+  };
+
   get firstNameField() {
-    return $(byTestId("test-First Name"));
+    return $(this.selectors.firstNameField);
   }
 
   get lastNameField() {
-    return $(byTestId("test-Last Name"));
+    return $(this.selectors.lastNameField);
   }
 
   get zipCodeField() {
-    return $(byTestId("test-Zip/Postal Code"));
+    return $(this.selectors.zipCodeField);
   }
 
   get continueBtn() {
-    return $(byTestId("test-CONTINUE"));
+    return $(this.selectors.continueBtn);
   }
 
   async fillForm(first: string, last: string, zip: string) {
