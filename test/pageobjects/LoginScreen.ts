@@ -1,16 +1,18 @@
 import { $, expect } from "@wdio/globals";
 
+import { byTestId } from "../utils/selectors";
+
 export default class LoginScreen {
   get usernameField() {
-    return $("~test-Username");
+    return $(byTestId("test-Username"));
   }
 
   get passwordField() {
-    return $("~test-Password");
+    return $(byTestId("test-Password"));
   }
 
   get loginButton() {
-    return $("~test-LOGIN");
+    return $(byTestId("test-LOGIN"));
   }
 
   async isDisplayed() {

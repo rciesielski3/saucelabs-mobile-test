@@ -1,6 +1,5 @@
-// test/pageobjects/ProductsScreen.ts
+import { $, $$, expect } from "@wdio/globals";
 
-import { $, $$, expect, browser } from "@wdio/globals";
 import { waitForElements } from "../utils/waitForElements";
 import { byTestId } from "../utils/selectors";
 
@@ -19,6 +18,10 @@ export default class ProductsScreen {
 
   get addToCartButtons() {
     return $$(byTestId("test-ADD TO CART"));
+  }
+
+  get removeFromCartButtons() {
+    return $$(byTestId("test-REMOVE"));
   }
 
   get cartIcon() {
@@ -69,5 +72,30 @@ export default class ProductsScreen {
   async goToCart() {
     await this.cartIcon.waitForDisplayed();
     await this.cartIcon.click();
+  }
+
+  async toggleCartButtonByTitle(targetTitle: string) {
+    await waitForElements(byTestId("test-Item title"));
+    await waitForElements(byTestId("test-ADD TO CART"));
+
+    const titles = await this.productTitles;
+    const titlesLength = await titles.length;
+    const addButtons = await this.addToCartButtons;
+
+    for (let i = 0; i < titlesLength; i++) {
+      const title = await titles[i].getText();
+      if (title === targetTitle) {
+        await addButtons[i].click();
+
+        await waitForElements(byTestId("test-REMOVE"));
+        const removeButtons = await this.removeFromCartButtons;
+        await removeButtons[i].click();
+
+        await waitForElements(byTestId("test-ADD TO CART"));
+        return;
+      }
+    }
+
+    throw new Error(`❌ Product "${targetTitle}" not found`);
   }
 }

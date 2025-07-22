@@ -1,20 +1,22 @@
 import { $ } from "@wdio/globals";
 
+import { byTestId } from "../../utils/selectors";
+
 export default class CheckoutInfoScreen {
   get firstNameField() {
-    return $("~test-First Name");
+    return $(byTestId("test-First Name"));
   }
 
   get lastNameField() {
-    return $("~test-Last Name");
+    return $(byTestId("test-Last Name"));
   }
 
   get zipCodeField() {
-    return $("~test-Zip/Postal Code");
+    return $(byTestId("test-Zip/Postal Code"));
   }
 
   get continueBtn() {
-    return $("~test-CONTINUE");
+    return $(byTestId("test-CONTINUE"));
   }
 
   async fillForm(first: string, last: string, zip: string) {
