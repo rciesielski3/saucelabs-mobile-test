@@ -7,11 +7,40 @@ Supports testing mobile apps.
 
 ## Features
 
-- ✅ WebdriverIO test runner with Mocha
-- ✅ Appium automation for Android (APK-based)
-- ✅ Page Object Model structure
-- ✅ TypeScript support with auto-compilation
-- ✅ `.env`-based config for platform, device, and app path
+- WebdriverIO test runner with Mocha
+- Appium automation for native apps
+- Cross-platform selectors for iOS/Android
+- Page Object Model structure
+- TypeScript support with auto-compilation
+- `.env`-based config for platform, device, and app path
+
+---
+
+## 🧪 Test Overview
+
+### Specs (`/test/specs`)
+
+- `login.e2e.ts` – login validation
+- `add-to-cart.e2e.ts` – add item to cart
+- `remove-from-cart.e2e.ts` – add/remove toggle test
+- `filter-products.e2e.ts` – product sorting (name + price)
+- `checkout.e2e.ts` – end-to-end checkout flow
+
+### Page Objects (`/test/pageobjects`)
+
+- `LoginScreen.ts`, `CartScreen.ts`, `ProductsScreen.ts`
+- `checkout/CheckoutInfoScreen.ts`, `checkout/CheckoutOverviewScreen.ts`, `checkout/CheckoutCompleteScreen.ts`
+
+---
+
+## Used Practices
+
+- **Page Object Model**: keeps selectors & actions reusable
+- **Selector utils**: `byTestId()` + `crossPlatformTextSelector()` for reliable, cross-platform targeting
+- **Wait utilities**: `waitForElements()` ensures async DOM readiness
+- **Clean assertions**: clear, readable `expect` logic
+- **Error handling**: helpful error messages if actions or selectors fail
+- **Test naming**: each test describes real user interaction or goal
 
 ---
 

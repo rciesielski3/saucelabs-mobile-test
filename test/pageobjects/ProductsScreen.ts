@@ -1,7 +1,7 @@
 import { $, $$, expect } from "@wdio/globals";
 
 import { waitForElements } from "../utils/waitForElements";
-import { byTestId } from "../utils/selectors";
+import { byTestId, crossPlatformTextSelector } from "../utils/selectors";
 
 export default class ProductsScreen {
   get title() {
@@ -26,6 +26,14 @@ export default class ProductsScreen {
 
   get cartIcon() {
     return $(byTestId("test-Cart"));
+  }
+
+  get filterButton() {
+    return $(byTestId("test-Modal Selector Button"));
+  }
+
+  get sortOptions() {
+    return $$(byTestId("Selector container"));
   }
 
   async isDisplayed() {
@@ -97,5 +105,21 @@ export default class ProductsScreen {
     }
 
     throw new Error(`❌ Product "${targetTitle}" not found`);
+  }
+
+  async openFilterModal() {
+    await this.filterButton.click();
+  }
+
+  async selectSortOptionByText(text: string) {
+    const selector = crossPlatformTextSelector(text);
+    await waitForElements(selector);
+
+    const element = await $(selector);
+    if (!(await element.isDisplayed())) {
+      throw new Error(`❌ Sort option "${text}" not visible`);
+    }
+
+    await element.click();
   }
 }
