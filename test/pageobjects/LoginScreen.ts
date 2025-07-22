@@ -3,20 +3,28 @@ import { $, expect } from "@wdio/globals";
 import { byTestId, crossPlatformTextSelector } from "../utils/selectors";
 
 export default class LoginScreen {
+  private readonly selectors = {
+    usernameField: byTestId("test-Username"),
+    passwordField: byTestId("test-Password"),
+    loginButton: byTestId("test-LOGIN"),
+    errorMessage: byTestId("test-Error message"),
+    errorSubstrings: ["required", "Username and password"],
+  };
+
   get usernameField() {
-    return $(byTestId("test-Username"));
+    return $(this.selectors.usernameField);
   }
 
   get passwordField() {
-    return $(byTestId("test-Password"));
+    return $(this.selectors.passwordField);
   }
 
   get loginButton() {
-    return $(byTestId("test-LOGIN"));
+    return $(this.selectors.loginButton);
   }
 
   get errorMessage() {
-    return $(byTestId("test-Error message"));
+    return $(this.selectors.errorMessage);
   }
 
   async isDisplayed() {
@@ -32,10 +40,9 @@ export default class LoginScreen {
   }
 
   async getVisibleErrorMessages(): Promise<string[]> {
-    const substrings = ["required", "Username and password"];
     const messages: string[] = [];
 
-    for (const text of substrings) {
+    for (const text of this.selectors.errorSubstrings) {
       const elements = await $$(crossPlatformTextSelector(text));
       for (const el of elements) {
         const msg = (await el.getText()).trim();

@@ -4,36 +4,47 @@ import { waitForElements } from "../utils/waitForElements";
 import { byTestId, crossPlatformTextSelector } from "../utils/selectors";
 
 export default class ProductsScreen {
+  private readonly selectors = {
+    title: byTestId("test-PRODUCTS"),
+    itemTitle: byTestId("test-Item title"),
+    price: byTestId("test-Price"),
+    addToCart: byTestId("test-ADD TO CART"),
+    removeFromCart: byTestId("test-REMOVE"),
+    cart: byTestId("test-Cart"),
+    filterButton: byTestId("test-Modal Selector Button"),
+    sortOptions: byTestId("Selector container"),
+  };
+
   get title() {
-    return $(byTestId("test-PRODUCTS"));
+    return $(this.selectors.title);
   }
 
   get productTitles() {
-    return $$(byTestId("test-Item title"));
+    return $$(this.selectors.itemTitle);
   }
 
   get productPrices() {
-    return $$(byTestId("test-Price"));
+    return $$(this.selectors.price);
   }
 
   get addToCartButtons() {
-    return $$(byTestId("test-ADD TO CART"));
+    return $$(this.selectors.addToCart);
   }
 
   get removeFromCartButtons() {
-    return $$(byTestId("test-REMOVE"));
+    return $$(this.selectors.removeFromCart);
   }
 
   get cartIcon() {
-    return $(byTestId("test-Cart"));
+    return $(this.selectors.cart);
   }
 
   get filterButton() {
-    return $(byTestId("test-Modal Selector Button"));
+    return $(this.selectors.filterButton);
   }
 
   get sortOptions() {
-    return $$(byTestId("Selector container"));
+    return $$(this.selectors.sortOptions);
   }
 
   async isDisplayed() {
@@ -41,8 +52,8 @@ export default class ProductsScreen {
   }
 
   async getProductList(): Promise<{ title: string; price: string }[]> {
-    await waitForElements(byTestId("test-Item title"));
-    await waitForElements(byTestId("test-Price"));
+    await waitForElements(this.selectors.itemTitle);
+    await waitForElements(this.selectors.price);
 
     const titles = await this.productTitles;
     const titlesCount = await titles.length;
@@ -83,8 +94,8 @@ export default class ProductsScreen {
   }
 
   async toggleCartButtonByTitle(targetTitle: string) {
-    await waitForElements(byTestId("test-Item title"));
-    await waitForElements(byTestId("test-ADD TO CART"));
+    await waitForElements(this.selectors.itemTitle);
+    await waitForElements(this.selectors.addToCart);
 
     const titles = await this.productTitles;
     const titlesLength = await titles.length;
@@ -95,11 +106,11 @@ export default class ProductsScreen {
       if (title === targetTitle) {
         await addButtons[i].click();
 
-        await waitForElements(byTestId("test-REMOVE"));
+        await waitForElements(this.selectors.removeFromCart);
         const removeButtons = await this.removeFromCartButtons;
         await removeButtons[i].click();
 
-        await waitForElements(byTestId("test-ADD TO CART"));
+        await waitForElements(this.selectors.addToCart);
         return;
       }
     }

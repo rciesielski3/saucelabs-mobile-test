@@ -53,9 +53,26 @@ saucelabs-mobile-test/
 ├── config/                    # Platform capability configs (Android, iOS)
 │   ├── android.config.ts
 │   └── ios.config.ts
-├── test/
-│   ├── specs/                 # E2E test specs
-│   └── pageobjects/           # Page Object classes
+├──test/
+│   ├── pageobjects/
+│   │   ├── checkout/
+│   │   │   ├── CheckoutInfoScreen.ts
+│   │   │   ├── CheckoutOverviewScreen.ts
+│   │   │   └── CheckoutCompleteScreen.ts
+│   │   ├── CartScreen.ts
+│   │   ├── LoginScreen.ts
+│   │   └── ProductsScreen.ts
+│   └── specs/
+│       ├── login.e2e.ts
+│       ├── login-user.e2e.ts
+│       ├── add-to-cart.e2e.ts
+│       ├── remove-from-cart.e2e.ts
+│       ├── filter-products.e2e.ts
+│       └── checkout.e2e.ts
+├── utils/
+│   ├── selectors.ts
+│   ├── users.ts
+│   └── waitForElements.ts
 │
 ├── .env                       # Device + app config
 ├── .env.android               # Android device/app settings
