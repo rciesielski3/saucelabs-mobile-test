@@ -1,5 +1,6 @@
 import LoginScreen from "../pageobjects/LoginScreen";
 import { users } from "../utils/users";
+import { tError } from "../utils/i18n";
 
 describe("Login screen displaying and validation", () => {
   const loginScreen = new LoginScreen();
@@ -12,7 +13,7 @@ describe("Login screen displaying and validation", () => {
     await loginScreen.loginButton.click();
     await expect(loginScreen.errorMessage).toBeDisplayed();
     const messages = await loginScreen.getVisibleErrorMessages();
-    expect(messages).toContain("Username is required");
+    expect(messages).toContain(tError("usernameRequired"));
   });
 
   it("should show error when password is empty", async () => {
@@ -20,7 +21,7 @@ describe("Login screen displaying and validation", () => {
     await loginScreen.loginButton.click();
     await expect(loginScreen.errorMessage).toBeDisplayed();
     const messages = await loginScreen.getVisibleErrorMessages();
-    expect(messages).toContain("Password is required");
+    expect(messages).toContain(tError("passwordRequired"));
   });
 
   it("should show error when credentials are incorrect", async () => {
@@ -30,8 +31,6 @@ describe("Login screen displaying and validation", () => {
     );
     await expect(loginScreen.errorMessage).toBeDisplayed();
     const messages = await loginScreen.getVisibleErrorMessages();
-    expect(messages).toContain(
-      "Username and password do not match any user in this service."
-    );
+    expect(messages).toContain(tError("invalidCredentials"));
   });
 });

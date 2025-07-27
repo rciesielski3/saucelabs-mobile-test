@@ -13,6 +13,7 @@ Supports testing mobile apps.
 - Page Object Model structure
 - TypeScript support with auto-compilation
 - `.env`-based config for platform, device, and app path
+- Multilingual test support via device language or `LANG` override
 
 ---
 
@@ -127,7 +128,7 @@ Scripts will:
 
 ---
 
-## 🌍 Environment Variables
+## Environment Variables
 
 Each `.env` file must define:
 
@@ -140,6 +141,22 @@ APP_FOLDER=./assets/android or ./assets/ios
 
 ---
 
+## Language Support
+
+Test language is automatically set from the device `language` or `locale` capability.
+
+Supported: `en` (default), `de`, `es`, `nl`
+
+You can override manually with:
+
+```bash
+LANG=de npm run test:android
+```
+
+The language is injected automatically in `wdio.conf.ts` via `beforeSession()`.
+
+---
+
 ## Built With
 
 - [WebdriverIO](https://webdriver.io/)
@@ -149,7 +166,19 @@ APP_FOLDER=./assets/android or ./assets/ios
 
 ---
 
-## Author
+## 🧑‍💻 Author
 
-Rafał Ciesielski  
-[GitHub](https://github.com/rciesielski3)
+Created with 💡 by [**Rafał Ciesielski**](https://github.com/rciesielski3)
+
+- [LinkedIn](https://www.linkedin.com/in/rafa%C5%82-ciesielski-820309100/)
+- [GitHub](https://github.com/rciesielski3)
+- [Portfolio](https://rciesielski3.github.io/portfolio/)
+
+---
+
+## 📄 License
+
+MIT License  
+Please credit if you reuse it in your own work 🙌
+
+[☕ Buy Me a Coffee](https://buycoffee.to/adateo)
