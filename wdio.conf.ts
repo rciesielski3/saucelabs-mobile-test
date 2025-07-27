@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 
 import { getAndroidCaps, getIosCaps } from "./config";
+import { supportedLanguages } from "./test/utils/i18n";
 
 dotenvConfig();
 
@@ -46,5 +47,16 @@ export const config = {
       transpileOnly: true,
       project: "./tsconfig.json",
     },
+  },
+
+  beforeSession: function (caps: any) {
+    const deviceLang = caps.language || caps.locale || "en";
+    const shortLang = String(deviceLang).slice(0, 2).toLowerCase();
+
+    process.env.LANG = supportedLanguages.includes(shortLang as any)
+      ? shortLang
+      : "en";
+
+    console.log(`Test language set to: ${process.env.LANG}`);
   },
 };

@@ -1,10 +1,11 @@
 import { $, expect } from "@wdio/globals";
 
 import { crossPlatformTextSelector } from "../../utils/selectors";
+import { t } from "../../utils/i18n";
 
 export default class CheckoutCompleteScreen {
   private readonly selectors = {
-    thankYouMessage: crossPlatformTextSelector("THANK YOU FOR YOU ORDER"),
+    thankYouMessage: crossPlatformTextSelector(t("thankYouMessage")),
     backHomeButton: "~test-BACK HOME",
   };
 
