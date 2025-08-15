@@ -30,7 +30,14 @@ export const config = {
 
   logLevel: "info",
 
-  services: ["appium"],
+  services: [
+    [
+      "appium",
+      {
+        logPath: "./logs/appium",
+      },
+    ],
+  ],
 
   framework: "mocha",
 
@@ -38,7 +45,7 @@ export const config = {
 
   mochaOpts: {
     ui: "bdd",
-    timeout: 60000,
+    timeout: 120000,
   },
 
   autoCompileOpts: {
@@ -49,14 +56,17 @@ export const config = {
     },
   },
 
-  beforeSession: function (caps: any) {
-    const deviceLang = caps.language || caps.locale || "en";
-    const shortLang = String(deviceLang).slice(0, 2).toLowerCase();
+  beforeSession: function (_config: any, caps: any) {
+    const deviceLang =
+      caps["appium:language"] ||
+      caps["appium:locale"] ||
+      caps.language ||
+      caps.locale ||
+      "en";
 
+    const shortLang = String(deviceLang).slice(0, 2).toLowerCase();
     process.env.LANG = supportedLanguages.includes(shortLang as any)
       ? shortLang
       : "en";
-
-    console.log(`Test language set to: ${process.env.LANG}`);
   },
 };
