@@ -4,7 +4,6 @@ import fs from "fs";
 
 import { getAndroidCaps, getIosCaps } from "./config";
 import { supportedLanguages } from "./test/utils/i18n";
-import { Frameworks } from "@wdio/types";
 
 dotenvConfig();
 
@@ -22,7 +21,7 @@ const capabilities = [
   platform === "ios" ? getIosCaps(appPath) : getAndroidCaps(appPath),
 ];
 
-export const config = {
+export const config: WebdriverIO.Config = {
   runner: "local",
   specs: ["./test/specs/*.ts"],
   maxInstances: 1,
@@ -35,7 +34,7 @@ export const config = {
     [
       "appium",
       {
-        logPath: "./logs/appium",
+        logPath: `./logs/appium/${platform || "unknown"}`,
       },
     ],
   ],
@@ -71,21 +70,10 @@ export const config = {
       : "en";
   },
 
-  afterTest: async function (
-    test: Frameworks.Test,
-    _context: any,
-    result: Frameworks.Results
-  ) {
-    const { passed } = result;
+  afterTest: async function (test, _context, { passed }) {
     if (!passed) {
-      const platform = (process.env.PLATFORM || "unknown").toLowerCase();
-      const dir = path.resolve(__dirname, `logs/screenshots/${platform}`);
-      fs.mkdirSync(dir, { recursive: true });
-
-      const safeTitle = test.title.replace(/[^\w\-]+/g, "_").slice(0, 120);
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-      const filename = path.join(dir, `${safeTitle}-${timestamp}.png`);
-
+      const filename = `./logs/screenshots/${test.title}-${timestamp}.png`;
       await browser.saveScreenshot(filename);
     }
   },
