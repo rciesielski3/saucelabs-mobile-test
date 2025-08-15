@@ -4,6 +4,7 @@ import fs from "fs";
 
 import { getAndroidCaps, getIosCaps } from "./config";
 import { supportedLanguages } from "./test/utils/i18n";
+import { Frameworks } from "@wdio/types";
 
 dotenvConfig();
 
@@ -68,5 +69,24 @@ export const config = {
     process.env.LANG = supportedLanguages.includes(shortLang as any)
       ? shortLang
       : "en";
+  },
+
+  afterTest: async function (
+    test: Frameworks.Test,
+    _context: any,
+    result: Frameworks.Results
+  ) {
+    const { passed } = result;
+    if (!passed) {
+      const platform = (process.env.PLATFORM || "unknown").toLowerCase();
+      const dir = path.resolve(__dirname, `logs/screenshots/${platform}`);
+      fs.mkdirSync(dir, { recursive: true });
+
+      const safeTitle = test.title.replace(/[^\w\-]+/g, "_").slice(0, 120);
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const filename = path.join(dir, `${safeTitle}-${timestamp}.png`);
+
+      await browser.saveScreenshot(filename);
+    }
   },
 };
