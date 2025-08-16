@@ -8,9 +8,15 @@ import { supportedLanguages } from "./test/utils/i18n";
 dotenvConfig();
 
 function getAppPath(): string {
-  const folderPath = path.resolve(__dirname, process.env.APP_FOLDER || "");
-  const files = fs.readdirSync(folderPath);
-  if (!files.length) throw new Error(`No app file found in ${folderPath}`);
+  const folder = process.env.APP_FOLDER || "";
+  const folderPath = path.resolve(__dirname, folder);
+  const files = fs
+    .readdirSync(folderPath)
+    .filter((f) => /\.(apk|aab|app|ipa)$/i.test(f));
+
+  if (!files.length) {
+    throw new Error(`No app file (.apk|.aab|.app|.ipa) found in ${folderPath}`);
+  }
   return path.join(folderPath, files[0]);
 }
 
