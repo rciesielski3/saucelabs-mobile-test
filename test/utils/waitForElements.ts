@@ -10,6 +10,6 @@ export async function waitForElements(selector: string, timeout = 5000) {
     {
       timeout,
       timeoutMsg: `❌ No elements found for selector: ${selector}`,
-    }
+    },
   );
 }

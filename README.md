@@ -1,184 +1,104 @@
-# 📱 Sauce Labs Mobile Test (WebdriverIO + Appium + TypeScript)
+# Swag Labs Mobile Tests (WebdriverIO + Appium + TypeScript)
 
-Automated mobile UI tests using **WebdriverIO**, **Appium**, and **TypeScript**.  
-Supports testing mobile apps.
+[![CI](https://github.com/rciesielski3/saucelabs-mobile-test/actions/workflows/ci.yml/badge.svg)](https://github.com/rciesielski3/saucelabs-mobile-test/actions/workflows/ci.yml)
 
----
+Mobile UI end-to-end tests for the Sauce Labs **Swag Labs** sample app (Android and iOS), written with WebdriverIO, Mocha, Appium 2 and TypeScript using the Page Object pattern.
 
-## Features
+Despite the repository name, the tests **run locally against Appium** on an emulator, simulator or device. They do not use the Sauce Labs cloud and need no Sauce account or credentials.
 
-- WebdriverIO test runner with Mocha
-- Appium automation for native apps
-- Cross-platform selectors for iOS/Android
-- Page Object Model structure
-- TypeScript support with auto-compilation
-- `.env`-based config for platform, device, and app path
-- Multilingual test support via device language or `LANG` override
+## Architecture
 
----
-
-## 🧪 Test Overview
-
-### Specs (`/test/specs`)
-
-- `login.e2e.ts` – login validation
-- `add-to-cart.e2e.ts` – add item to cart
-- `remove-from-cart.e2e.ts` – add/remove toggle test
-- `filter-products.e2e.ts` – product sorting (name + price)
-- `checkout.e2e.ts` – end-to-end checkout flow
-
-### Page Objects (`/test/pageobjects`)
-
-- `LoginScreen.ts`, `CartScreen.ts`, `ProductsScreen.ts`
-- `checkout/CheckoutInfoScreen.ts`, `checkout/CheckoutOverviewScreen.ts`, `checkout/CheckoutCompleteScreen.ts`
-
----
-
-## Used Practices
-
-- **Page Object Model**: keeps selectors & actions reusable
-- **Selector utils**: `byTestId()` + `crossPlatformTextSelector()` for reliable, cross-platform targeting
-- **Wait utilities**: `waitForElements()` ensures async DOM readiness
-- **Clean assertions**: clear, readable `expect` logic
-- **Error handling**: helpful error messages if actions or selectors fail
-- **Test naming**: each test describes real user interaction or goal
-
----
-
-## Project Structure
-
-```
-saucelabs-mobile-test/
-│
-├── assets/                    # Contains app file
-├── config/                    # Platform capability configs (Android, iOS)
-│   ├── android.config.ts
-│   └── ios.config.ts
-├──test/
-│   ├── pageobjects/
-│   │   ├── checkout/
-│   │   │   ├── CheckoutInfoScreen.ts
-│   │   │   ├── CheckoutOverviewScreen.ts
-│   │   │   └── CheckoutCompleteScreen.ts
-│   │   ├── CartScreen.ts
-│   │   ├── LoginScreen.ts
-│   │   └── ProductsScreen.ts
-│   └── specs/
-│       ├── login.e2e.ts
-│       ├── login-user.e2e.ts
-│       ├── add-to-cart.e2e.ts
-│       ├── remove-from-cart.e2e.ts
-│       ├── filter-products.e2e.ts
-│       └── checkout.e2e.ts
-├── utils/
-│   ├── selectors.ts
-│   ├── users.ts
-│   └── waitForElements.ts
-│
-├── .env                       # Device + app config
-├── .env.android               # Android device/app settings
-├── .env.ios                   # iOS device/app settings
-├── tsconfig.json              # TypeScript config
-├── wdio.conf.ts               # WebdriverIO main config
-├── package.json               # Dependencies & scripts
+```mermaid
+flowchart LR
+  Spec["Mocha specs<br/>test/specs"] --> PO["Page objects<br/>test/pageobjects"]
+  PO --> Utils["Selectors + i18n<br/>test/utils"]
+  Spec --> WDIO["WebdriverIO runner<br/>wdio.conf.ts"]
+  WDIO --> Appium["Appium 2<br/>UiAutomator2 / XCUITest"]
+  Appium --> Device["Emulator / simulator / device<br/>Swag Labs app"]
 ```
 
----
+## Prerequisites
 
-## ⚙️ Setup
+- Node.js 22 or newer (`.nvmrc` provided: `nvm use`)
+- Android: Android Studio with an emulator (or a device), `ANDROID_HOME` set
+- iOS (macOS only): Xcode with a simulator
+- Appium drivers are installed as npm dev dependencies, no global Appium needed
 
-### 1. Install dependencies
+## Setup
 
 ```bash
-npm install
+npm ci
 ```
 
-### 2. Add iOS or Android app
+### Get the Swag Labs app
 
-Place your `.apk` or `.app/.zip` file in the matching folder:
+The app binaries are not committed (`assets/` is git-ignored). Download them from the official releases: https://github.com/saucelabs/sample-app-mobile/releases
 
-```
-assets/android/
-assets/ios/
-```
+- Android: put the `.apk` in `assets/android/`
+- iOS: put the simulator `.app` (or its `.zip`) in `assets/ios/`
 
-Pre-built app are available at https://github.com/saucelabs/sample-app-mobile/releases/
+The first file found in the folder is used. If the folder is missing, the run stops with a clear error message.
 
----
+### Configuration
 
-## 🚀 Running Tests
+`npm run test:android` and `npm run test:ios` set `PLATFORM` and `APP_FOLDER` for you, so no `.env` is required. To override the device or platform version, copy `.env.example` to `.env` and edit it (real environment variables take precedence over `.env`).
 
-### Android (emulator or real device)
+## Running tests
+
+Start an Android emulator or iOS simulator first, then:
 
 ```bash
 npm run test:android
-```
-
-### iOS (simulator or real device)
-
-```bash
 npm run test:ios
 ```
 
-Scripts will:
+The test language follows the device `language`/`locale` capability (`en` default; `de`, `es`, `nl` supported) and is set in `beforeSession()`. The inline environment variables in the scripts need a POSIX shell (macOS, Linux, WSL).
 
-- Copy `.env.android` or `.env.ios` into `.env`
-- Load proper capabilities automatically
-- Run using `wdio.conf.ts`
+## Scripts
 
----
+| Script                 | What it does                            |
+| ---------------------- | --------------------------------------- |
+| `npm run test:android` | Run all specs on Android                |
+| `npm run test:ios`     | Run all specs on iOS                    |
+| `npm run lint`         | ESLint (typescript-eslint, flat config) |
+| `npm run format`       | Prettier, write                         |
+| `npm run format:check` | Prettier, check only                    |
+| `npm run typecheck`    | `tsc --noEmit`                          |
 
-## Environment Variables
+## Specs
 
-Each `.env` file must define:
+| File                      | Covers                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------- |
+| `login-validation.e2e.ts` | Login screen elements, empty credentials, empty password, wrong credentials (4) |
+| `login-success.e2e.ts`    | Valid login lands on the Products screen (1)                                    |
+| `add-to-cart.e2e.ts`      | Add an item to the cart                                                         |
+| `remove-from-cart.e2e.ts` | Add/remove toggle                                                               |
+| `filter-products.e2e.ts`  | Product sorting by name and price                                               |
+| `checkout.e2e.ts`         | Full checkout flow                                                              |
 
-```env
-PLATFORM=Android or iOS
-PLATFORM_VERSION=15.0 or 17.0
-DEVICE_NAME=your_device_name
-APP_FOLDER=./assets/android or ./assets/ios
+## Project structure
+
+```
+.
+├── .github/workflows/ci.yml   # static checks
+├── assets/                    # app binaries (git-ignored)
+├── config/                    # Appium capabilities (android.config.ts, ios.config.ts)
+├── test/
+│   ├── pageobjects/           # LoginScreen, ProductsScreen, CartScreen, checkout/*
+│   ├── specs/                 # *.e2e.ts
+│   └── utils/                 # i18n.ts, selectors.ts, users.ts, waitForElements.ts
+├── .env.example
+├── eslint.config.mjs
+├── tsconfig.json
+└── wdio.conf.ts
 ```
 
----
+## CI and limitations
 
-## Language Support
+CI (GitHub Actions, Ubuntu 24.04, Node 22) runs lint, format check, type check and a non-blocking `npm audit` for production dependencies. The badge reflects these **static checks only**.
 
-Test language is automatically set from the device `language` or `locale` capability.
+The E2E tests are **not run in CI**. Android emulators on hosted runners need KVM, start slowly and are flaky, and iOS needs much pricier macOS runners. Tests run with `transpileOnly`, so the type check in CI is the only compile-time gate. The tests have not been verified against the latest Swag Labs app release, so selectors may need updating.
 
-Supported: `en` (default), `de`, `es`, `nl`
+## License
 
-You can override manually with:
-
-```bash
-LANG=de npm run test:android
-```
-
-The language is injected automatically in `wdio.conf.ts` via `beforeSession()`.
-
----
-
-## Built With
-
-- [WebdriverIO](https://webdriver.io/)
-- [Appium](https://appium.io/)
-- [Mocha](https://mochajs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-
----
-
-## 🧑‍💻 Author
-
-Created with 💡 by [**Rafał Ciesielski**](https://github.com/rciesielski3)
-
-- [LinkedIn](https://www.linkedin.com/in/rafa%C5%82-ciesielski-820309100/)
-- [GitHub](https://github.com/rciesielski3)
-- [Portfolio](https://rciesielski3.github.io/portfolio/)
-
----
-
-## 📄 License
-
-MIT License  
-Please credit if you reuse it in your own work 🙌
-
-[☕ Buy Me a Coffee](https://buycoffee.to/adateo)
+MIT. Created by [Rafał Ciesielski](https://github.com/rciesielski3).

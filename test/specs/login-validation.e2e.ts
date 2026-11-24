@@ -2,7 +2,7 @@ import LoginScreen from "../pageobjects/LoginScreen";
 import { users } from "../utils/users";
 import { tError } from "../utils/i18n";
 
-describe("Login screen displaying and validation", () => {
+describe("Login validation", () => {
   const loginScreen = new LoginScreen();
 
   it("should display all login elements", async () => {
@@ -27,7 +27,7 @@ describe("Login screen displaying and validation", () => {
   it("should show error when credentials are incorrect", async () => {
     await loginScreen.login(
       users.standard.username,
-      users.standard.password + "1"
+      users.standard.password + "1",
     );
     await expect(loginScreen.errorMessage).toBeDisplayed();
     const messages = await loginScreen.getVisibleErrorMessages();

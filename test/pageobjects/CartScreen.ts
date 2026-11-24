@@ -63,7 +63,7 @@ export default class CartScreen {
     }
 
     throw new Error(
-      `❌ Product "${targetTitle}" not found in cart for removal`
+      `❌ Product "${targetTitle}" not found in cart for removal`,
     );
   }
 }

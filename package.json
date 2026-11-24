@@ -1,17 +1,20 @@
 {
   "name": "saucelabs-mobile-test",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "test": "wdio run wdio.conf.ts",
-    "test:android": "cp .env.android .env && wdio run wdio.conf.ts",
-    "test:ios": "cp .env.ios .env && wdio run wdio.conf.ts"
+    "test:android": "PLATFORM=Android APP_FOLDER=./assets/android wdio run wdio.conf.ts",
+    "test:ios": "PLATFORM=iOS APP_FOLDER=./assets/ios wdio run wdio.conf.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "Rafał Ciesielski",
+  "license": "MIT",
+  "description": "WebdriverIO + Appium + TypeScript mobile E2E tests for the Swag Labs sample app",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/mocha": "^10.0.10",
     "@wdio/appium-service": "^9.18.1",
     "@wdio/cli": "^9.18.1",
@@ -24,11 +27,17 @@
     "appium-uiautomator2-driver": "^4.2.5",
     "appium-xcuitest-driver": "^9.9.6",
     "dotenv": "^17.2.0",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.74.0",
     "webdriverio": "^9.18.1"
   },
-  "dependencies": {
-    "@wdio/sync": "^7.14.1"
+  "private": true,
+  "engines": {
+    "node": ">=22"
   }
 }
