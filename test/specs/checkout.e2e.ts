@@ -39,13 +39,13 @@ describe("Checkout flow", () => {
     await checkoutInfoScreen.fillForm(
       testCustomer.firstName,
       testCustomer.lastName,
-      testCustomer.zipCode
+      testCustomer.zipCode,
     );
     await checkoutInfoScreen.continueToOverview();
 
     const summary = await checkoutOverviewScreen.getSummaryDetails(
       product.title,
-      product.price
+      product.price,
     );
 
     expect(summary.title).toBe(product.title);

@@ -2,7 +2,7 @@ import { users } from "../utils/users";
 import LoginScreen from "../pageobjects/LoginScreen";
 import ProductsScreen from "../pageobjects/ProductsScreen";
 
-describe("Login with valid credentials", () => {
+describe("Login success", () => {
   const loginScreen = new LoginScreen();
 
   it("should log in and see the products page", async () => {

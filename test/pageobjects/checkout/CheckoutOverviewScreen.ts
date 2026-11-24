@@ -28,7 +28,7 @@ export default class CheckoutOverviewScreen {
 
   async getSummaryDetails(
     productTitle: string,
-    productPrice: string
+    productPrice: string,
   ): Promise<{ title: string; price: string }> {
     const titleSelector = crossPlatformTextSelector(productTitle);
     const priceSelector = crossPlatformTextSelector(productPrice);
